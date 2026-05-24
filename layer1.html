@@ -361,45 +361,6 @@ id="message">
 
 <script>
 
-const response = await fetch("/.netlify/functions/hint-auth", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    layer: "layer1",
-    password: value
-  })
-});
-
-const data = await response.json();
-
-if(data.success){
-
-moving=true;
-
-input.blur();
-
-container.style.opacity="0";
-container.style.filter="blur(70px)";
-document.body.style.filter="brightness(1.08)";
-
-mist.classList.add("cover");
-
-setTimeout(function(){
-window.location.href=data.redirect;
-},4400);
-
-}else{
-
-message.classList.add("show");
-
-setTimeout(function(){
-message.classList.remove("show");
-},1800);
-
-}
-
 const input=
 document.getElementById(
 "password"
@@ -426,7 +387,7 @@ input.addEventListener(
 
 "keydown",
 
-function(e){
+async function(e){
 
 if(
 e.isComposing ||
@@ -451,10 +412,28 @@ const value=
 input.value
 .trim();
 
+try{
+
+const response=
+await fetch(
+"/.netlify/functions/hint-auth",
+{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+layer:"layer1",
+password:value
+})
+}
+);
+
+const data=
+await response.json();
+
 if(
-correctWords.includes(
-value
-)
+data.success
 ){
 
 moving=true;
@@ -479,7 +458,7 @@ setTimeout(
 function(){
 
 window.location.href=
-"hint-layer1.html";
+data.redirect;
 
 },
 
@@ -490,6 +469,30 @@ window.location.href=
 }
 
 else{
+
+message.classList.add(
+"show"
+);
+
+setTimeout(
+
+function(){
+
+message.classList.remove(
+"show"
+);
+
+},
+
+1800
+
+);
+
+}
+
+}
+
+catch(error){
 
 message.classList.add(
 "show"
