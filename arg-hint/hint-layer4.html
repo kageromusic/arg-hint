@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>最終層</title>
+
+<style>
+
+html,body{
+margin:0;
+width:100%;
+min-height:100%;
+overflow-x:hidden;
+
+background:
+radial-gradient(
+circle at center,
+#4e5051 0%,
+#252729 45%,
+#030405 100%
+);
+
+font-family:
+"Hiragino Mincho ProN",
+"Yu Mincho",
+serif;
+
+color:white;
+}
+
+.fog{
+position:fixed;
+inset:-45%;
+background:
+radial-gradient(
+circle,
+rgba(255,255,255,.05),
+transparent 74%
+);
+filter:blur(210px);
+animation:fogMove 46s ease-in-out infinite;
+pointer-events:none;
+}
+
+.fog2{
+opacity:.28;
+animation-delay:-18s;
+}
+
+@keyframes fogMove{
+0%{transform:translate(-5%,0) scale(1);}
+50%{transform:translate(5%,-3%) scale(1.1);}
+100%{transform:translate(-5%,0) scale(1);}
+}
+
+.noise{
+position:fixed;
+inset:0;
+opacity:.014;
+pointer-events:none;
+background:
+repeating-linear-gradient(
+0deg,
+white 0,
+white 1px,
+transparent 2px,
+transparent 4px
+);
+mix-blend-mode:screen;
+}
+
+.container{
+position:relative;
+z-index:2;
+width:min(820px,88%);
+margin:auto;
+padding:120px 0 180px;
+}
+
+.fragments{
+display:flex;
+flex-direction:column;
+gap:38px;
+align-items:center;
+margin-bottom:80px;
+}
+
+.fragment{
+cursor:pointer;
+font-size:18px;
+letter-spacing:.4em;
+opacity:.58;
+color:rgba(255,255,255,.82);
+text-shadow:
+0 0 8px rgba(255,255,255,.18),
+0 0 24px rgba(255,255,255,.1);
+transition:1.2s;
+animation:glow 10s ease-in-out infinite;
+}
+
+.fragment:hover,
+.fragment.active{
+opacity:.92;
+text-shadow:
+0 0 14px rgba(255,255,255,.36),
+0 0 42px rgba(255,255,255,.2);
+}
+
+@keyframes glow{
+0%{transform:translateY(0);}
+50%{
+transform:translateY(-2px);
+text-shadow:
+0 0 12px rgba(255,255,255,.26),
+0 0 30px rgba(255,255,255,.14);
+}
+100%{transform:translateY(0);}
+}
+
+.hint-area{
+min-height:560px;
+text-align:center;
+}
+
+.hint-content{
+display:none;
+opacity:0;
+filter:blur(30px);
+animation:mistIn 3.8s forwards;
+}
+
+.hint-content.show{
+display:block;
+}
+
+@keyframes mistIn{
+0%{
+opacity:0;
+filter:blur(36px);
+transform:translateY(20px);
+}
+100%{
+opacity:1;
+filter:blur(0);
+transform:translateY(0);
+}
+}
+
+.section-title{
+margin:0 0 50px;
+font-size:14px;
+letter-spacing:.3em;
+opacity:.56;
+}
+
+.hint{
+margin:20px 0;
+padding:10px;
+font-size:14px;
+line-height:2.3;
+letter-spacing:.08em;
+opacity:.2;
+filter:blur(4px);
+cursor:pointer;
+transition:1.5s;
+text-shadow:0 0 16px rgba(0,0,0,.7);
+}
+
+.hint:hover{
+opacity:.36;
+}
+
+.hint.visible{
+opacity:.86;
+filter:blur(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="fog"></div>
+<div class="fog fog2"></div>
+<div class="noise"></div>
+
+<div class="container">
+
+<div class="fragments">
+<div class="fragment" onclick="showFragment('finalFragment', this)">最後の断片</div>
+</div>
+
+<div class="hint-area">
+
+<div id="finalFragment" class="hint-content">
+<div class="section-title">11曲目</div>
+<div class="hint">① 白い霧に耳を澄ます</div>
+<div class="hint">② 箱の数</div>
+<div class="hint">③ 箱の数と一致するもの</div>
+<div class="hint">④ memoの数</div>
+<div class="hint">⑤ 音を聞き、11曲目にふさわしい言葉を紡ぐ</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function showFragment(id, element){
+
+document.querySelectorAll(".hint-content").forEach(content=>{
+content.classList.remove("show");
+content.style.animation = "none";
+content.offsetHeight;
+content.style.animation = "";
+});
+
+document.querySelectorAll(".fragment").forEach(fragment=>{
+fragment.classList.remove("active");
+});
+
+document.getElementById(id).classList.add("show");
+element.classList.add("active");
+
+}
+
+document.querySelectorAll(".hint").forEach(item=>{
+item.onclick=()=>{
+item.classList.toggle("visible");
+};
+});
+
+</script>
+
+</body>
+</html>
