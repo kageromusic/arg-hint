@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>第一層</title>
+
+<style>
+
+html,body{
+margin:0;
+width:100%;
+min-height:100%;
+overflow-x:hidden;
+
+background:
+radial-gradient(
+circle at center,
+#aeb0ae 0%,
+#878886 45%,
+#535456 100%
+);
+
+font-family:
+"Hiragino Mincho ProN",
+"Yu Mincho",
+serif;
+
+color:white;
+}
+
+.fog{
+position:fixed;
+inset:-40%;
+background:
+radial-gradient(
+circle,
+rgba(255,255,255,.16),
+transparent 68%
+);
+filter:blur(170px);
+animation:fogMove 35s ease-in-out infinite;
+pointer-events:none;
+}
+
+.fog2{
+opacity:.45;
+animation-delay:-14s;
+}
+
+@keyframes fogMove{
+0%{transform:translate(-5%,0) scale(1);}
+50%{transform:translate(6%,-3%) scale(1.15);}
+100%{transform:translate(-5%,0) scale(1);}
+}
+
+.noise{
+position:fixed;
+inset:0;
+opacity:.025;
+pointer-events:none;
+background:
+repeating-linear-gradient(
+0deg,
+white 0,
+white 1px,
+transparent 2px,
+transparent 4px
+);
+mix-blend-mode:screen;
+}
+
+.container{
+position:relative;
+z-index:2;
+width:min(760px,88%);
+margin:auto;
+padding:110px 0 180px;
+}
+
+.fragments{
+display:flex;
+flex-direction:column;
+gap:42px;
+align-items:center;
+margin-bottom:80px;
+}
+
+.fragment{
+cursor:pointer;
+font-size:18px;
+letter-spacing:.4em;
+opacity:.75;
+color:rgba(255,255,255,.94);
+text-shadow:
+0 0 8px rgba(255,255,255,.35),
+0 0 24px rgba(255,255,255,.22);
+transition:1.2s;
+animation:glow 8s ease-in-out infinite;
+}
+
+.fragment:hover,
+.fragment.active{
+opacity:1;
+text-shadow:
+0 0 14px rgba(255,255,255,.58),
+0 0 42px rgba(255,255,255,.35);
+}
+
+@keyframes glow{
+0%{transform:translateY(0);}
+50%{
+transform:translateY(-2px);
+text-shadow:
+0 0 12px rgba(255,255,255,.45),
+0 0 30px rgba(255,255,255,.26);
+}
+100%{transform:translateY(0);}
+}
+
+.hint-area{
+min-height:520px;
+text-align:center;
+}
+
+.hint-content{
+display:none;
+opacity:0;
+filter:blur(22px);
+animation:mistIn 2.8s forwards;
+}
+
+.hint-content.show{
+display:block;
+}
+
+@keyframes mistIn{
+0%{
+opacity:0;
+filter:blur(28px);
+transform:translateY(16px);
+}
+100%{
+opacity:1;
+filter:blur(0);
+transform:translateY(0);
+}
+}
+
+.section-title{
+margin:0 0 46px;
+font-size:14px;
+letter-spacing:.3em;
+opacity:.72;
+}
+
+.hint{
+margin:20px 0;
+padding:10px;
+font-size:14px;
+line-height:2.2;
+letter-spacing:.08em;
+opacity:.26;
+filter:blur(4px);
+cursor:pointer;
+transition:1.4s;
+text-shadow:0 0 10px rgba(0,0,0,.35);
+}
+
+.hint:hover{
+opacity:.42;
+}
+
+.hint.visible{
+opacity:.9;
+filter:blur(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="fog"></div>
+<div class="fog fog2"></div>
+<div class="noise"></div>
+
+<div class="container">
+
+<div class="fragments">
+<div class="fragment" onclick="showFragment('f1', this)">断片１</div>
+<div class="fragment" onclick="showFragment('f2', this)">断片２</div>
+<div class="fragment" onclick="showFragment('f3', this)">断片３</div>
+</div>
+
+<div class="hint-area">
+
+<div id="f1" class="hint-content">
+<div class="section-title">掲示板</div>
+<div class="hint">① HPは改修中。色々な言葉を検索にかけていく</div>
+<div class="hint">② 各ページの固有名詞</div>
+<div class="hint">③ 特産品ページにある固有名詞</div>
+<div class="hint">④ 「筒井美幸」</div>
+<div class="hint">⑤ 掲示板のパスワードは映画のタイトル</div>
+</div>
+
+<div id="f2" class="hint-content">
+<div class="section-title">名前</div>
+<div class="hint">① HP内に登場する団体名</div>
+<div class="hint">② 「久々戸花の会」</div>
+<div class="hint">③ 掲示板内の会話</div>
+<div class="hint">④ スレッド002</div>
+<div class="hint">⑤ 「花の会」に関する各記事、変化したこと</div>
+<div class="hint">⑥ 参加しなくなった人のフルネーム</div>
+</div>
+
+<div id="f3" class="hint-content">
+<div class="section-title">画家</div>
+<div class="hint">① 制作メモに登場する固有名詞</div>
+<div class="hint">② 行方不明記事に登場する固有名詞</div>
+<div class="hint">③ スレッド006</div>
+<div class="hint">④ 「羅童崖」</div>
+<div class="hint">⑤ 「久々戸公民館」方面</div>
+<div class="hint">⑥ クリアファイルの絵を書いた人間</div>
+<div class="hint">⑦ 「季節の移ろいを、その名の通り美しく描き続けてこられた」</div>
+<div class="hint">⑧ 先生のフルネームを漢字で検索する</div>
+<div class="hint">⑨ 苗字は桃山、クリアファイルのサイン</div>
+<div class="hint">⑩ Shiki</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function showFragment(id, element){
+
+document.querySelectorAll(".hint-content").forEach(content=>{
+content.classList.remove("show");
+content.style.animation = "none";
+content.offsetHeight;
+content.style.animation = "";
+});
+
+document.querySelectorAll(".fragment").forEach(fragment=>{
+fragment.classList.remove("active");
+});
+
+document.getElementById(id).classList.add("show");
+element.classList.add("active");
+
+}
+
+document.querySelectorAll(".hint").forEach(item=>{
+item.onclick=()=>{
+item.classList.toggle("visible");
+};
+});
+
+</script>
+
+</body>
+</html>

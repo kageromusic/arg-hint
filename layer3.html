@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>第三層</title>
+
+<style>
+
+html, body{
+
+margin:0;
+
+width:100%;
+height:100%;
+
+overflow:hidden;
+
+background:
+
+linear-gradient(
+
+to bottom,
+
+#8b8c8b 0%,
+
+#646564 28%,
+
+#38393a 62%,
+
+#0e1012 100%
+
+);
+
+font-family:
+
+"Hiragino Mincho ProN",
+"Yu Mincho",
+serif;
+
+color:white;
+
+transition:
+
+filter 5s ease;
+
+}
+
+/* 背景霧 */
+
+.fog{
+
+position:fixed;
+
+inset:-35%;
+
+background:
+
+radial-gradient(
+
+circle,
+
+rgba(255,255,255,.08),
+
+transparent 72%
+
+);
+
+filter:
+
+blur(170px);
+
+animation:
+
+fogMove 32s ease-in-out infinite;
+
+pointer-events:none;
+
+}
+
+.fog2{
+
+animation-delay:-14s;
+
+opacity:.38;
+
+}
+
+@keyframes fogMove{
+
+0%{
+
+transform:
+
+translate(-8%,0)
+scale(1);
+
+}
+
+50%{
+
+transform:
+
+translate(6%,-4%)
+scale(1.12);
+
+}
+
+100%{
+
+transform:
+
+translate(-8%,0)
+scale(1);
+
+}
+
+}
+
+.noise{
+
+position:fixed;
+
+inset:0;
+
+opacity:.018;
+
+pointer-events:none;
+
+background:
+
+repeating-linear-gradient(
+
+0deg,
+
+white 0,
+
+white 1px,
+
+transparent 2px,
+
+transparent 4px
+
+);
+
+mix-blend-mode:screen;
+
+}
+
+/* 本体 */
+
+.container{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:
+
+translate(-50%,-50%);
+
+text-align:center;
+
+opacity:0;
+
+animation:
+
+appear 6s forwards;
+
+width:90%;
+
+max-width:520px;
+
+z-index:5;
+
+transition:
+
+opacity 3.6s ease,
+filter 3.8s ease;
+
+}
+
+@keyframes appear{
+
+from{
+
+opacity:0;
+
+filter:
+blur(28px);
+
+}
+
+to{
+
+opacity:1;
+
+filter:
+blur(0);
+
+}
+
+}
+
+.layer-title{
+
+font-size:18px;
+
+letter-spacing:.45em;
+
+opacity:.42;
+
+margin-bottom:60px;
+
+animation:
+
+float 15s ease-in-out infinite;
+
+}
+
+.question{
+
+font-size:15px;
+
+letter-spacing:.18em;
+
+line-height:2;
+
+opacity:.62;
+
+margin-bottom:38px;
+
+}
+
+input{
+
+width:80%;
+
+max-width:320px;
+
+background:
+
+rgba(255,255,255,.03);
+
+border:none;
+
+border-bottom:
+
+1px solid rgba(255,255,255,.25);
+
+outline:none;
+
+color:
+
+rgba(255,255,255,.9);
+
+font-size:16px;
+
+letter-spacing:.12em;
+
+text-align:center;
+
+padding:
+
+12px 8px;
+
+font-family:
+
+inherit;
+
+}
+
+input::placeholder{
+
+color:
+
+rgba(255,255,255,.22);
+
+}
+
+.message{
+
+height:32px;
+
+margin-top:30px;
+
+font-size:13px;
+
+opacity:0;
+
+transition:
+
+1.5s;
+
+filter:
+
+blur(5px);
+
+}
+
+.message.show{
+
+opacity:.4;
+
+filter:
+
+blur(.6px);
+
+}
+
+@keyframes float{
+
+0%{
+transform:
+translateY(0);
+}
+
+50%{
+transform:
+translateY(-3px);
+}
+
+100%{
+transform:
+translateY(0);
+}
+
+}
+
+/* 遷移霧 */
+
+#mist{
+
+position:fixed;
+
+inset:-45%;
+
+opacity:0;
+
+pointer-events:none;
+
+z-index:30;
+
+background:
+
+radial-gradient(
+
+circle at center,
+
+rgba(255,255,255,.38) 0%,
+
+rgba(255,255,255,.24) 35%,
+
+rgba(255,255,255,.12) 65%,
+
+transparent
+
+);
+
+filter:
+
+blur(200px);
+
+transform:
+
+scale(.6);
+
+transition:
+
+opacity 4.2s ease,
+transform 4.6s ease;
+
+}
+
+#mist.cover{
+
+opacity:1;
+
+transform:
+
+scale(2);
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="fog"></div>
+
+<div class="fog fog2"></div>
+
+<div class="noise"></div>
+
+<div
+class="container"
+id="container">
+
+<div class="layer-title">
+
+第三層
+
+</div>
+
+<div class="question">
+
+古くから伝わる言葉
+
+</div>
+
+<input
+id="password"
+type="text"
+autocomplete="off"
+placeholder="言葉を入力してください"
+>
+
+<div
+class="message"
+id="message">
+
+思い出せませんでした。
+
+</div>
+
+</div>
+
+<div id="mist"></div>
+
+<script>
+
+const response = await fetch("/.netlify/functions/hint-auth", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    layer: "layer3",
+    password: value
+  })
+});
+
+const data = await response.json();
+
+if(data.success){
+
+moving=true;
+
+input.blur();
+
+container.style.opacity="0";
+container.style.filter="blur(70px)";
+document.body.style.filter="brightness(1.08)";
+
+mist.classList.add("cover");
+
+setTimeout(function(){
+window.location.href=data.redirect;
+},4400);
+
+}else{
+
+message.classList.add("show");
+
+setTimeout(function(){
+message.classList.remove("show");
+},1800);
+
+}
+
+const input=
+document.getElementById(
+"password"
+);
+
+const message=
+document.getElementById(
+"message"
+);
+
+const container=
+document.getElementById(
+"container"
+);
+
+const mist=
+document.getElementById(
+"mist"
+);
+
+let moving=false;
+
+input.addEventListener(
+
+"keydown",
+
+function(e){
+
+if(
+e.isComposing ||
+e.keyCode===229
+){
+return;
+}
+
+if(
+moving
+){
+return;
+}
+
+if(
+e.key==="Enter"
+){
+
+e.preventDefault();
+
+const value=
+input.value
+.trim();
+
+if(
+correctWords.includes(
+value
+)
+){
+
+moving=true;
+
+input.blur();
+
+container.style.opacity=
+"0";
+
+container.style.filter=
+"blur(70px)";
+
+document.body.style.filter=
+"brightness(1.08)";
+
+mist.classList.add(
+"cover"
+);
+
+setTimeout(
+
+function(){
+
+window.location.href=
+"hint-layer3.html";
+
+},
+
+4400
+
+);
+
+}
+
+else{
+
+message.classList.add(
+"show"
+);
+
+setTimeout(
+
+function(){
+
+message.classList.remove(
+"show"
+);
+
+},
+
+2000
+
+);
+
+}
+
+}
+
+}
+
+);
+
+</script>
+
+</body>
+</html>

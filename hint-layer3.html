@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>第三層</title>
+
+<style>
+
+html,body{
+margin:0;
+width:100%;
+min-height:100%;
+overflow-x:hidden;
+
+background:
+radial-gradient(
+circle at center,
+#777876 0%,
+#4f5051 45%,
+#17191b 100%
+);
+
+font-family:
+"Hiragino Mincho ProN",
+"Yu Mincho",
+serif;
+
+color:white;
+}
+
+.fog{
+position:fixed;
+inset:-40%;
+background:
+radial-gradient(
+circle,
+rgba(255,255,255,.085),
+transparent 72%
+);
+filter:blur(190px);
+animation:fogMove 42s ease-in-out infinite;
+pointer-events:none;
+}
+
+.fog2{
+opacity:.32;
+animation-delay:-16s;
+}
+
+@keyframes fogMove{
+0%{transform:translate(-5%,0) scale(1);}
+50%{transform:translate(6%,-3%) scale(1.12);}
+100%{transform:translate(-5%,0) scale(1);}
+}
+
+.noise{
+position:fixed;
+inset:0;
+opacity:.018;
+pointer-events:none;
+background:
+repeating-linear-gradient(
+0deg,
+white 0,
+white 1px,
+transparent 2px,
+transparent 4px
+);
+mix-blend-mode:screen;
+}
+
+.container{
+position:relative;
+z-index:2;
+width:min(820px,88%);
+margin:auto;
+padding:110px 0 180px;
+}
+
+.fragments{
+display:flex;
+flex-direction:column;
+gap:38px;
+align-items:center;
+margin-bottom:80px;
+}
+
+.fragment{
+cursor:pointer;
+font-size:18px;
+letter-spacing:.4em;
+opacity:.68;
+color:rgba(255,255,255,.88);
+text-shadow:
+0 0 8px rgba(255,255,255,.24),
+0 0 24px rgba(255,255,255,.14);
+transition:1.2s;
+animation:glow 9s ease-in-out infinite;
+}
+
+.fragment:hover,
+.fragment.active{
+opacity:.96;
+text-shadow:
+0 0 14px rgba(255,255,255,.44),
+0 0 42px rgba(255,255,255,.24);
+}
+
+@keyframes glow{
+0%{transform:translateY(0);}
+50%{
+transform:translateY(-2px);
+text-shadow:
+0 0 12px rgba(255,255,255,.32),
+0 0 30px rgba(255,255,255,.18);
+}
+100%{transform:translateY(0);}
+}
+
+.hint-area{
+min-height:560px;
+text-align:center;
+}
+
+.hint-content{
+display:none;
+opacity:0;
+filter:blur(26px);
+animation:mistIn 3.2s forwards;
+}
+
+.hint-content.show{
+display:block;
+}
+
+@keyframes mistIn{
+0%{
+opacity:0;
+filter:blur(32px);
+transform:translateY(18px);
+}
+100%{
+opacity:1;
+filter:blur(0);
+transform:translateY(0);
+}
+}
+
+.section-title{
+margin:0 0 46px;
+font-size:14px;
+letter-spacing:.3em;
+opacity:.62;
+}
+
+.hint{
+margin:20px 0;
+padding:10px;
+font-size:14px;
+line-height:2.2;
+letter-spacing:.08em;
+opacity:.22;
+filter:blur(4px);
+cursor:pointer;
+transition:1.4s;
+text-shadow:0 0 14px rgba(0,0,0,.55);
+}
+
+.hint:hover{
+opacity:.4;
+}
+
+.hint.visible{
+opacity:.88;
+filter:blur(0);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="fog"></div>
+<div class="fog fog2"></div>
+<div class="noise"></div>
+
+<div class="container">
+
+<div class="fragments">
+<div class="fragment" onclick="showFragment('f9', this)">断片９</div>
+<div class="fragment" onclick="showFragment('f10', this)">断片１０</div>
+<div class="fragment" onclick="showFragment('f11', this)">断片１１</div>
+</div>
+
+<div class="hint-area">
+
+<div id="f9" class="hint-content">
+<div class="section-title">祭礼手順</div>
+<div class="hint">① 祭礼に携わる人々、関係性</div>
+<div class="hint">② このページを管理している人間は誰か</div>
+<div class="hint">③ 「磯辺海斗」の記事</div>
+<div class="hint">④ 「招待された方の声」</div>
+</div>
+
+<div id="f10" class="hint-content">
+<div class="section-title">静寂</div>
+<div class="hint">① 手順の通りに</div>
+<div class="hint">② 求められるものに従う</div>
+<div class="hint">③ 耳を澄まし、静寂へと導け</div>
+</div>
+
+<div id="f11" class="hint-content">
+<div class="section-title">追体験</div>
+<div class="hint">① この一連の事件は、誰かの想いか、それとも</div>
+<div class="hint">② その名を呼んでみる</div>
+<div class="hint">③ 検索で呼びかける</div>
+<div class="hint">④ 草陽炎、楽曲制作の追体験</div>
+<div class="hint">⑤ その言葉は、どの楽曲を指すのか</div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function showFragment(id, element){
+
+document.querySelectorAll(".hint-content").forEach(content=>{
+content.classList.remove("show");
+content.style.animation = "none";
+content.offsetHeight;
+content.style.animation = "";
+});
+
+document.querySelectorAll(".fragment").forEach(fragment=>{
+fragment.classList.remove("active");
+});
+
+document.getElementById(id).classList.add("show");
+element.classList.add("active");
+
+}
+
+document.querySelectorAll(".hint").forEach(item=>{
+item.onclick=()=>{
+item.classList.toggle("visible");
+};
+});
+
+</script>
+
+</body>
+</html>
