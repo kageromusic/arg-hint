@@ -182,6 +182,24 @@ filter:blur(0);
 
 <body>
 
+  <script>
+
+if(
+sessionStorage.getItem(
+"hint_layer1"
+)!=="ok"
+){
+
+window.location.href=
+"index.html";
+
+}
+
+sessionStorage.removeItem(
+"hint_layer1"
+);
+
+</script>
 <div class="fog"></div>
 <div class="fog fog2"></div>
 <div class="noise"></div>
