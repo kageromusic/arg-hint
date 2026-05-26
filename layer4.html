@@ -385,7 +385,28 @@ transform:
 scale(2);
 
 }
+@media (max-width:640px){
 
+  .fog{
+    inset:-20%;
+    filter:blur(70px);
+    animation:none;
+  }
+
+  #mist{
+    inset:-25%;
+    filter:blur(80px);
+    transition:
+    opacity 3.8s ease,
+    transform 4s ease;
+  }
+
+  #mist.cover{
+    opacity:1;
+    transform:scale(1.35);
+  }
+
+}
 </style>
 
 </head>
