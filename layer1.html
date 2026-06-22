@@ -218,6 +218,66 @@ rgba(255,255,255,.32);
 
 }
 
+.enter-button{
+
+display:block;
+
+margin:
+24px auto 0;
+
+
+
+padding:
+11px 28px;
+
+background:
+rgba(255,255,255,.08);
+
+border:
+1px solid rgba(255,255,255,.36);
+
+border-radius:
+999px;
+
+color:
+rgba(255,255,255,.82);
+
+font-family:
+inherit;
+
+font-size:
+12px;
+
+letter-spacing:
+.28em;
+
+cursor:
+pointer;
+
+transition:
+1.1s;
+
+box-shadow:
+0 0 18px rgba(255,255,255,.08),
+inset 0 0 12px rgba(255,255,255,.04);
+
+}
+
+.enter-button:hover{
+
+background:
+rgba(255,255,255,.15);
+
+text-shadow:
+0 0 10px rgba(255,255,255,.65),
+0 0 24px rgba(255,255,255,.35);
+
+box-shadow:
+0 0 28px rgba(255,255,255,.2),
+inset 0 0 16px rgba(255,255,255,.07);
+
+}
+
 .message{
 
 height:32px;
@@ -368,6 +428,14 @@ autocomplete="off"
 placeholder="言葉を入力してください"
 >
 
+<button
+class="enter-button"
+id="enterButton"
+type="button"
+>
+進む
+</button>
+
 <div
 class="message"
 id="message">
@@ -387,6 +455,11 @@ document.getElementById(
 "password"
 );
 
+const enterButton=
+document.getElementById(
+"enterButton"
+);
+
 const message=
 document.getElementById(
 "message"
@@ -404,30 +477,13 @@ document.getElementById(
 
 let moving=false;
 
-input.addEventListener(
-
-"keydown",
-
-async function(e){
-
-if(
-e.isComposing ||
-e.keyCode===229
-){
-return;
-}
+async function submitAnswer(){
 
 if(
 moving
 ){
 return;
 }
-
-if(
-e.key==="Enter"
-){
-
-e.preventDefault();
 
 const value=
 input.value
@@ -488,7 +544,7 @@ data.redirect;
 
 },
 
-4400
+1800
 
 );
 }
@@ -540,6 +596,41 @@ message.classList.remove(
 }
 
 }
+
+input.addEventListener(
+
+"keydown",
+
+function(e){
+
+if(
+e.isComposing ||
+e.keyCode===229
+){
+return;
+}
+
+if(
+e.key==="Enter"
+){
+
+e.preventDefault();
+
+submitAnswer();
+
+}
+
+}
+
+);
+
+enterButton.addEventListener(
+
+"click",
+
+function(){
+
+submitAnswer();
 
 }
 
